@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/onemessage-backend/src/onemessagebackend/WebAPI/appsettings.Development.json
+/onemessage-backend/src/onemessagebackend/WebAPI/appsettings.json
+/onemessage-backend/src/onemessagebackend/WebAPI/appsettings.Staging.json
