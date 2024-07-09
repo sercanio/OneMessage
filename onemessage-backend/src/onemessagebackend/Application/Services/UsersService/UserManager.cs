@@ -1,9 +1,11 @@
-﻿using System.Linq.Expressions;
-using Application.Features.Users.Rules;
+﻿using Application.Features.Users.Rules;
 using Application.Services.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Query;
+using NArchitecture.Core.Application.Dtos;
 using NArchitecture.Core.Persistence.Paging;
+using NArchitecture.Core.Security.Hashing;
+using System.Linq.Expressions;
 
 namespace Application.Services.UsersService;
 
@@ -77,5 +79,26 @@ public class UserManager : IUserService
         User deletedUser = await _userRepository.DeleteAsync(user);
 
         return deletedUser;
+    }
+
+    public async Task<User> Register(UserForRegisterDto request)
+    {
+        await _userBusinessRules.UserEmailShouldNotExistsWhenInsert(request.Email);
+
+        HashingHelper.CreatePasswordHash(
+            request.Password,
+            passwordHash: out byte[] passwordHash,
+            passwordSalt: out byte[] passwordSalt
+        );
+        User newUser =
+            new()
+            {
+                Email = request.Email,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+            };
+
+        User createdUser = await _userRepository.AddAsync(newUser);
+        return createdUser;
     }
 }

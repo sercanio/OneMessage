@@ -6,6 +6,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NArchitecture.Core.Security.Constants;
+using Application.Features.AppUsers.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -97,6 +98,22 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
         );
         #endregion
 
+        
+        #region AppUsers CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Admin },
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Read },
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Write },
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Create },
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Update },
+                new() { Id = ++lastId, Name = AppUsersOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.GetDynamicAppUser });
         return featureOperationClaims;
     }
 #pragma warning restore S1854 // Unused assignments should be removed
