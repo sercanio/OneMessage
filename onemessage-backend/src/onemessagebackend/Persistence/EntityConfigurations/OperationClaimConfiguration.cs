@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NArchitecture.Core.Security.Constants;
 using Application.Features.AppUsers.Constants;
+using Application.Features.Messages.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -114,6 +115,30 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
         
         
         featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.GetDynamicAppUser });
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.CreateAppUserContact });
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.DeleteAppUserContact });
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.CreateAppUserBlocking });
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.DeleteAppUserBlocking });
+        
+        #region Messages CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Admin },
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Read },
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Write },
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Create },
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Update },
+                new() { Id = ++lastId, Name = MessagesOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = MessagesOperationClaims.GetListByAppUserId });
         return featureOperationClaims;
     }
 #pragma warning restore S1854 // Unused assignments should be removed

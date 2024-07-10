@@ -14,4 +14,12 @@ public static class AppUsersOperationClaims
     public const string Delete = $"{_section}.Delete";
     
     public const string GetDynamicAppUser = $"{_section}.GetDynamicAppUser";
+    
+    public const string CreateAppUserContact = $"{_section}.CreateAppUserContact";
+    
+    public const string DeleteAppUserContact = $"{_section}.DeleteAppUserContact";
+    
+    public const string CreateAppUserBlocking = $"{_section}.CreateAppUserBlocking";
+    
+    public const string DeleteAppUserBlocking = $"{_section}.DeleteAppUserBlocking";
 }

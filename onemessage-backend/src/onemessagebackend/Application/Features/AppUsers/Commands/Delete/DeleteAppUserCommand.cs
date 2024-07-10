@@ -1,11 +1,10 @@
-using Application.Features.AppUsers.Constants;
 using Application.Features.AppUsers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 using NArchitecture.Core.Application.Pipelines.Logging;
 using NArchitecture.Core.Application.Pipelines.Transaction;
-using MediatR;
 
 namespace Application.Features.AppUsers.Commands.Delete;
 

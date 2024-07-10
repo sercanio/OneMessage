@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240709103101_AddMessages")]
+    partial class AddMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,27 +48,28 @@ namespace Persistence.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("AvatarURL")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("AvatarURL");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("DeletedDate");
 
                     b.Property<DateTime?>("LastSeen")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastSeen");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("Status");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -73,13 +77,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("UserName");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex(new[] { "UserId" }, "AppUser_UserID_UK")
                         .IsUnique();
 
                     b.ToTable("AppUsers", (string)null);
@@ -585,12 +588,12 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078"),
+                            Id = new Guid("02a2b4d5-b54e-4d6c-82d5-135243e55b7f"),
                             AuthenticatorType = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "narch@kodlama.io",
-                            PasswordHash = new byte[] { 163, 28, 108, 177, 16, 85, 175, 117, 171, 170, 216, 222, 226, 238, 47, 198, 27, 43, 236, 33, 158, 246, 206, 94, 201, 29, 76, 230, 176, 61, 169, 102, 252, 195, 184, 49, 168, 174, 160, 155, 234, 148, 104, 202, 38, 158, 90, 181, 43, 238, 232, 100, 1, 57, 156, 243, 218, 244, 85, 47, 189, 107, 112, 16 },
-                            PasswordSalt = new byte[] { 21, 226, 20, 77, 76, 184, 63, 131, 34, 108, 102, 96, 19, 13, 20, 139, 216, 189, 22, 101, 5, 20, 130, 224, 147, 31, 237, 252, 112, 156, 215, 128, 181, 107, 226, 98, 254, 55, 227, 224, 107, 168, 129, 165, 17, 15, 143, 49, 5, 207, 248, 222, 202, 195, 85, 44, 121, 48, 104, 67, 59, 200, 167, 82, 10, 96, 145, 190, 237, 64, 95, 198, 122, 173, 116, 39, 42, 224, 147, 106, 2, 186, 232, 40, 90, 125, 140, 235, 151, 160, 143, 90, 94, 229, 176, 96, 117, 248, 194, 218, 236, 211, 120, 123, 154, 35, 194, 103, 95, 130, 193, 169, 166, 11, 102, 189, 103, 91, 87, 88, 215, 164, 114, 243, 39, 155, 175, 105 }
+                            PasswordHash = new byte[] { 168, 23, 111, 9, 255, 150, 11, 56, 102, 189, 87, 39, 51, 152, 158, 164, 246, 249, 239, 193, 121, 236, 113, 184, 162, 76, 57, 94, 173, 75, 169, 252, 88, 116, 88, 109, 221, 222, 84, 59, 49, 124, 24, 50, 201, 8, 81, 204, 151, 166, 194, 36, 53, 8, 239, 34, 225, 75, 204, 88, 219, 217, 190, 121 },
+                            PasswordSalt = new byte[] { 249, 74, 213, 170, 116, 148, 108, 82, 71, 142, 208, 79, 108, 87, 197, 20, 121, 7, 94, 38, 173, 5, 46, 69, 165, 169, 252, 85, 140, 132, 0, 16, 247, 145, 172, 142, 93, 255, 177, 254, 64, 44, 49, 245, 17, 21, 225, 224, 213, 159, 23, 31, 158, 183, 198, 221, 222, 116, 243, 70, 183, 233, 217, 69, 21, 100, 76, 50, 139, 221, 39, 59, 56, 182, 62, 104, 45, 187, 244, 72, 134, 210, 180, 126, 178, 27, 51, 159, 95, 178, 202, 75, 148, 126, 101, 228, 91, 202, 169, 48, 33, 145, 15, 185, 197, 253, 233, 215, 199, 54, 186, 160, 84, 243, 74, 129, 199, 69, 190, 215, 235, 223, 2, 182, 59, 240, 108, 8 }
                         });
                 });
 
@@ -632,10 +635,10 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1043d551-5843-4776-a4d8-442f8c06afc4"),
+                            Id = new Guid("26d736c1-db0b-4333-9171-acbf261179b0"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationClaimId = 1,
-                            UserId = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078")
+                            UserId = new Guid("02a2b4d5-b54e-4d6c-82d5-135243e55b7f")
                         });
                 });
 
@@ -657,8 +660,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.AppUser", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -679,15 +682,15 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Message", b =>
                 {
                     b.HasOne("Domain.Entities.AppUser", "Receiver")
-                        .WithMany("MessagesReceived")
+                        .WithMany()
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "Sender")
-                        .WithMany("MessagesSent")
+                        .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Receiver");
@@ -734,13 +737,6 @@ namespace Persistence.Migrations
                     b.Navigation("OperationClaim");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.AppUser", b =>
-                {
-                    b.Navigation("MessagesReceived");
-
-                    b.Navigation("MessagesSent");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

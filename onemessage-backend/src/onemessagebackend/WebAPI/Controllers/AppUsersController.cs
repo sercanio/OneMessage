@@ -1,5 +1,9 @@
 using Application.Features.AppUsers.Commands.Create;
+using Application.Features.AppUsers.Commands.CreateAppUserBlocking;
+using Application.Features.AppUsers.Commands.CreateAppUserContact;
 using Application.Features.AppUsers.Commands.Delete;
+using Application.Features.AppUsers.Commands.DeleteAppUserBlocking;
+using Application.Features.AppUsers.Commands.DeleteAppUserContact;
 using Application.Features.AppUsers.Commands.Update;
 using Application.Features.AppUsers.Queries.GetById;
 using Application.Features.AppUsers.Queries.GetDynamicAppUser;
@@ -68,6 +72,36 @@ public class AppUsersController : BaseController
 
         GetListResponse<GetDynamicAppUserListItemDto> response = await Mediator.Send(query);
 
+        return Ok(response);
+    }
+
+    [HttpPost("CreateAppUserContact")]
+    public async Task<ActionResult<CreateAppUserContactResponse>> CreateAppUserContact([FromBody] CreateAppUserContactCommand createAppUserContactCommand)
+    {
+        CreateAppUserContactResponse response = await Mediator.Send(createAppUserContactCommand);
+        return Ok(response);
+    }
+
+    [HttpDelete("DeleteAppUserContact/{contactId}")]
+    public async Task<ActionResult<DeleteAppUserContactResponse>> DeleteAppUserContact([FromRoute] Guid contactId)
+    {
+        DeleteAppUserContactCommand command = new() { ContactId = contactId };
+        DeleteAppUserContactResponse response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPost("CreateAppUserBlocking")]
+    public async Task<ActionResult<CreateAppUserBlockingResponse>> CreateAppUserBlocking([FromBody] CreateAppUserBlockingCommand createAppUserBlockingCommand)
+    {
+        CreateAppUserBlockingResponse response = await Mediator.Send(createAppUserBlockingCommand);
+        return Ok(response);
+    }
+
+    [HttpDelete("DeleteAppUserBlocking/{blockingId}")]
+    public async Task<ActionResult<DeleteAppUserBlockingResponse>> DeleteAppUserBlocking([FromRoute] Guid blockingId)
+    {
+        DeleteAppUserBlockingCommand command = new() { BlockingId = blockingId };
+        DeleteAppUserBlockingResponse response = await Mediator.Send(command);
         return Ok(response);
     }
 }

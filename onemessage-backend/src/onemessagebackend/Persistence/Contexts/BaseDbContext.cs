@@ -15,6 +15,7 @@ public class BaseDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     public DbSet<AppUser> AppUsers { get; set; }
+    public DbSet<Message> Messages { get; set; }
 
     public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         : base(dbContextOptions)

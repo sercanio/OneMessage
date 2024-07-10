@@ -8,22 +8,36 @@ public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {
     public void Configure(EntityTypeBuilder<AppUser> builder)
     {
-        builder.ToTable("AppUsers").HasKey(au => au.Id);
+        builder.ToTable("AppUsers").HasKey(a => a.Id);
 
-        builder.Property(au => au.Id).HasColumnName("Id").IsRequired();
-        builder.Property(au => au.UserId).HasColumnName("UserId").IsRequired();
-        builder.Property(au => au.AvatarURL).HasColumnName("AvatarURL");
-        builder.Property(au => au.UserName).HasColumnName("UserName").IsRequired();
-        builder.Property(au => au.Status).HasColumnName("Status");
-        builder.Property(au => au.LastSeen).HasColumnName("LastSeen");
-        builder.Property(au => au.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-        builder.Property(au => au.UpdatedDate).HasColumnName("UpdatedDate");
-        builder.Property(au => au.DeletedDate).HasColumnName("DeletedDate");
+        builder.Property(a => a.Id).HasColumnName("Id").IsRequired();
+        builder.Property(a => a.UserId).HasColumnName("UserId").IsRequired();
+        builder.Property(a => a.AvatarURL).HasColumnName("AvatarURL").HasMaxLength(256);
+        builder.Property(a => a.UserName).HasColumnName("UserName").IsRequired().HasMaxLength(50);
+        builder.Property(a => a.Status).HasColumnName("Status").HasMaxLength(256);
+        builder.Property(a => a.LastSeen).HasColumnName("LastSeen");
 
-        builder.HasQueryFilter(au => !au.DeletedDate.HasValue);
+        builder.HasOne(a => a.User)
+               .WithOne()
+               .HasForeignKey<AppUser>(a => a.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(a => a.UserId, "AppUser_UserID_UK").IsUnique();
+        //builder.HasMany(a => a.Contacts)
+        //       .WithMany()
+        //       .UsingEntity(j => j.ToTable("UserContacts"));
 
-        builder.HasOne(a => a.User);
+        //builder.HasMany(a => a.Blockings)
+        //       .WithMany()
+        //       .UsingEntity(j => j.ToTable("UserBlockings"));
+
+        builder.HasMany(a => a.MessagesSent)
+               .WithOne(m => m.Sender)
+               .HasForeignKey(m => m.SenderId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(a => a.MessagesReceived)
+               .WithOne(m => m.Receiver)
+               .HasForeignKey(m => m.ReceiverId)
+               .OnDelete(DeleteBehavior.Restrict);
     }
 }

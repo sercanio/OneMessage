@@ -23,6 +23,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
 
         services.AddScoped<IAppUserRepository, AppUserRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
         return services;
     }
 }

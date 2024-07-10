@@ -10,4 +10,6 @@ public class GetByIdAppUserResponse : IResponse
     public string UserName { get; set; }
     public string Status { get; set; }
     public DateTime LastSeen { get; set; }
+    public List<ContactDto> Contacts { get; set; } = new();
+    public List<BlockingDto> Blockings { get; set; } = new();
 }

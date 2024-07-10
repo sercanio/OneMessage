@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240709091344_AddBlocking")]
+    partial class AddBlocking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,27 +48,28 @@ namespace Persistence.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("AvatarURL")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("AvatarURL");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("DeletedDate");
 
                     b.Property<DateTime?>("LastSeen")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastSeen");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("Status");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -73,13 +77,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("UserName");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex(new[] { "UserId" }, "AppUser_UserID_UK")
                         .IsUnique();
 
                     b.ToTable("AppUsers", (string)null);
@@ -121,51 +124,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EmailAuthenticators", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.Message", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Content");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("CreatedDate");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("DeletedDate");
-
-                    b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("ReceiverId");
-
-                    b.Property<bool>("Seen")
-                        .HasColumnType("boolean")
-                        .HasColumnName("Seen");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("SenderId");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.OperationClaim", b =>
@@ -396,48 +354,6 @@ namespace Persistence.Migrations
                             Id = 33,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "AppUsers.CreateAppUserBlocking"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "AppUsers.DeleteAppUserBlocking"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Admin"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Read"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Write"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Create"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Update"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Messages.Delete"
                         });
                 });
 
@@ -585,12 +501,12 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078"),
+                            Id = new Guid("c02aa1ce-9d82-49a0-b54a-3eafca539ed6"),
                             AuthenticatorType = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "narch@kodlama.io",
-                            PasswordHash = new byte[] { 163, 28, 108, 177, 16, 85, 175, 117, 171, 170, 216, 222, 226, 238, 47, 198, 27, 43, 236, 33, 158, 246, 206, 94, 201, 29, 76, 230, 176, 61, 169, 102, 252, 195, 184, 49, 168, 174, 160, 155, 234, 148, 104, 202, 38, 158, 90, 181, 43, 238, 232, 100, 1, 57, 156, 243, 218, 244, 85, 47, 189, 107, 112, 16 },
-                            PasswordSalt = new byte[] { 21, 226, 20, 77, 76, 184, 63, 131, 34, 108, 102, 96, 19, 13, 20, 139, 216, 189, 22, 101, 5, 20, 130, 224, 147, 31, 237, 252, 112, 156, 215, 128, 181, 107, 226, 98, 254, 55, 227, 224, 107, 168, 129, 165, 17, 15, 143, 49, 5, 207, 248, 222, 202, 195, 85, 44, 121, 48, 104, 67, 59, 200, 167, 82, 10, 96, 145, 190, 237, 64, 95, 198, 122, 173, 116, 39, 42, 224, 147, 106, 2, 186, 232, 40, 90, 125, 140, 235, 151, 160, 143, 90, 94, 229, 176, 96, 117, 248, 194, 218, 236, 211, 120, 123, 154, 35, 194, 103, 95, 130, 193, 169, 166, 11, 102, 189, 103, 91, 87, 88, 215, 164, 114, 243, 39, 155, 175, 105 }
+                            PasswordHash = new byte[] { 26, 14, 207, 87, 96, 84, 237, 173, 84, 85, 2, 119, 149, 250, 74, 38, 145, 82, 215, 219, 2, 167, 90, 184, 6, 77, 63, 48, 176, 228, 226, 201, 18, 137, 244, 135, 121, 131, 68, 230, 84, 228, 6, 10, 10, 74, 241, 13, 218, 95, 129, 4, 218, 89, 247, 107, 58, 1, 120, 152, 115, 2, 229, 29 },
+                            PasswordSalt = new byte[] { 6, 156, 241, 85, 3, 244, 53, 101, 28, 122, 9, 30, 2, 116, 245, 228, 207, 121, 232, 155, 144, 34, 39, 92, 55, 153, 108, 101, 142, 13, 228, 30, 128, 18, 134, 83, 218, 23, 22, 113, 191, 96, 42, 90, 157, 216, 61, 39, 149, 159, 0, 94, 174, 82, 90, 90, 238, 126, 129, 4, 36, 26, 24, 182, 139, 253, 211, 119, 110, 230, 154, 137, 88, 219, 180, 184, 154, 130, 5, 235, 31, 188, 146, 28, 102, 175, 199, 73, 128, 117, 51, 240, 120, 220, 74, 208, 229, 139, 119, 170, 211, 154, 127, 174, 64, 190, 107, 25, 223, 6, 186, 130, 60, 236, 107, 42, 97, 17, 120, 197, 106, 150, 241, 92, 107, 166, 165, 76 }
                         });
                 });
 
@@ -632,10 +548,10 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1043d551-5843-4776-a4d8-442f8c06afc4"),
+                            Id = new Guid("3577af89-9bdf-486e-ae7e-3f674a83448b"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationClaimId = 1,
-                            UserId = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078")
+                            UserId = new Guid("c02aa1ce-9d82-49a0-b54a-3eafca539ed6")
                         });
                 });
 
@@ -657,8 +573,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.AppUser", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -674,25 +590,6 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Message", b =>
-                {
-                    b.HasOne("Domain.Entities.AppUser", "Receiver")
-                        .WithMany("MessagesReceived")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.AppUser", "Sender")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Domain.Entities.OtpAuthenticator", b =>
@@ -734,13 +631,6 @@ namespace Persistence.Migrations
                     b.Navigation("OperationClaim");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.AppUser", b =>
-                {
-                    b.Navigation("MessagesReceived");
-
-                    b.Navigation("MessagesSent");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

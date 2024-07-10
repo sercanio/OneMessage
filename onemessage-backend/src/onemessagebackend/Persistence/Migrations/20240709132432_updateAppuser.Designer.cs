@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence.Contexts;
@@ -11,9 +12,11 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240709132432_updateAppuser")]
+    partial class updateAppuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,19 +25,34 @@ namespace Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AppUserAppUser", b =>
+            modelBuilder.Entity("AppUserBlocking", b =>
                 {
-                    b.Property<Guid>("BlockingsId")
+                    b.Property<Guid>("BlockedUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ContactsId")
+                    b.Property<Guid>("BlockingUserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("BlockingsId", "ContactsId");
+                    b.HasKey("BlockedUserId", "BlockingUserId");
 
-                    b.HasIndex("ContactsId");
+                    b.HasIndex("BlockingUserId");
 
-                    b.ToTable("AppUserAppUser");
+                    b.ToTable("AppUserBlocking");
+                });
+
+            modelBuilder.Entity("AppUserContact", b =>
+                {
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ContactId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AppUserContact");
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
@@ -45,27 +63,28 @@ namespace Persistence.Migrations
                         .HasColumnName("Id");
 
                     b.Property<string>("AvatarURL")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("AvatarURL");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreatedDate");
 
                     b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("DeletedDate");
 
                     b.Property<DateTime?>("LastSeen")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("LastSeen");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)")
+                        .HasColumnType("text")
                         .HasColumnName("Status");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("UpdatedDate");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -73,13 +92,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("text")
                         .HasColumnName("UserName");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex(new[] { "UserId" }, "AppUser_UserID_UK")
                         .IsUnique();
 
                     b.ToTable("AppUsers", (string)null);
@@ -585,12 +603,12 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078"),
+                            Id = new Guid("99c78e00-0b61-4477-89d3-f1ef9bafc6d2"),
                             AuthenticatorType = 0,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "narch@kodlama.io",
-                            PasswordHash = new byte[] { 163, 28, 108, 177, 16, 85, 175, 117, 171, 170, 216, 222, 226, 238, 47, 198, 27, 43, 236, 33, 158, 246, 206, 94, 201, 29, 76, 230, 176, 61, 169, 102, 252, 195, 184, 49, 168, 174, 160, 155, 234, 148, 104, 202, 38, 158, 90, 181, 43, 238, 232, 100, 1, 57, 156, 243, 218, 244, 85, 47, 189, 107, 112, 16 },
-                            PasswordSalt = new byte[] { 21, 226, 20, 77, 76, 184, 63, 131, 34, 108, 102, 96, 19, 13, 20, 139, 216, 189, 22, 101, 5, 20, 130, 224, 147, 31, 237, 252, 112, 156, 215, 128, 181, 107, 226, 98, 254, 55, 227, 224, 107, 168, 129, 165, 17, 15, 143, 49, 5, 207, 248, 222, 202, 195, 85, 44, 121, 48, 104, 67, 59, 200, 167, 82, 10, 96, 145, 190, 237, 64, 95, 198, 122, 173, 116, 39, 42, 224, 147, 106, 2, 186, 232, 40, 90, 125, 140, 235, 151, 160, 143, 90, 94, 229, 176, 96, 117, 248, 194, 218, 236, 211, 120, 123, 154, 35, 194, 103, 95, 130, 193, 169, 166, 11, 102, 189, 103, 91, 87, 88, 215, 164, 114, 243, 39, 155, 175, 105 }
+                            PasswordHash = new byte[] { 7, 233, 126, 192, 97, 252, 76, 102, 14, 228, 40, 72, 122, 123, 77, 111, 253, 82, 185, 23, 115, 178, 225, 139, 154, 219, 169, 178, 240, 199, 23, 179, 181, 1, 65, 145, 182, 7, 20, 138, 186, 122, 91, 107, 33, 109, 60, 65, 63, 176, 244, 33, 155, 174, 43, 37, 239, 101, 33, 1, 168, 110, 198, 26 },
+                            PasswordSalt = new byte[] { 196, 186, 3, 135, 72, 168, 134, 40, 158, 18, 143, 59, 52, 106, 63, 188, 165, 10, 175, 52, 200, 85, 111, 125, 169, 54, 12, 124, 136, 49, 107, 84, 245, 0, 20, 165, 41, 193, 146, 27, 103, 175, 14, 106, 16, 183, 95, 178, 32, 110, 78, 4, 96, 176, 75, 97, 239, 147, 169, 44, 15, 71, 120, 224, 171, 190, 208, 3, 124, 232, 180, 155, 111, 18, 59, 52, 162, 135, 35, 54, 118, 139, 215, 0, 108, 42, 57, 2, 236, 124, 147, 147, 153, 85, 248, 149, 112, 24, 68, 73, 246, 162, 171, 202, 115, 226, 36, 199, 239, 149, 3, 58, 223, 180, 143, 203, 235, 47, 217, 165, 109, 74, 91, 175, 235, 194, 93, 239 }
                         });
                 });
 
@@ -632,33 +650,48 @@ namespace Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1043d551-5843-4776-a4d8-442f8c06afc4"),
+                            Id = new Guid("4c23846a-cf68-4d42-9bd7-93be17c70f5b"),
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             OperationClaimId = 1,
-                            UserId = new Guid("2c9cff6f-977a-48b2-be87-3c0bf8397078")
+                            UserId = new Guid("99c78e00-0b61-4477-89d3-f1ef9bafc6d2")
                         });
                 });
 
-            modelBuilder.Entity("AppUserAppUser", b =>
+            modelBuilder.Entity("AppUserBlocking", b =>
                 {
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
-                        .HasForeignKey("BlockingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
-                        .HasForeignKey("ContactsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("BlockingUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AppUserContact", b =>
+                {
+                    b.HasOne("Domain.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
                     b.HasOne("Domain.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.AppUser", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -679,13 +712,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Message", b =>
                 {
                     b.HasOne("Domain.Entities.AppUser", "Receiver")
-                        .WithMany("MessagesReceived")
+                        .WithMany()
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "Sender")
-                        .WithMany("MessagesSent")
+                        .WithMany("Messages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -738,9 +771,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
-                    b.Navigation("MessagesReceived");
-
-                    b.Navigation("MessagesSent");
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
