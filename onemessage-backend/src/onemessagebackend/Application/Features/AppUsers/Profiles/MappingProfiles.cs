@@ -5,6 +5,7 @@ using Application.Features.AppUsers.Commands.Delete;
 using Application.Features.AppUsers.Commands.DeleteAppUserBlocking;
 using Application.Features.AppUsers.Commands.DeleteAppUserContact;
 using Application.Features.AppUsers.Commands.Update;
+using Application.Features.AppUsers.Queries.GetAppUserByUserId;
 using Application.Features.AppUsers.Queries.GetById;
 using Application.Features.AppUsers.Queries.GetDynamicAppUser;
 using Application.Features.AppUsers.Queries.GetList;
@@ -31,6 +32,8 @@ namespace Application.Features.AppUsers.Profiles
             CreateMap<AppUser, GetByIdAppUserResponse>();
             CreateMap<AppUser, ContactDto>();
             CreateMap<AppUser, BlockingDto>();
+
+            CreateMap<AppUser, GetAppUserByUserIdResponse>();
 
             CreateMap<AppUser, CreateAppUserContactResponse>();
             CreateMap<CreateAppUserContactResponse, AppUser>();

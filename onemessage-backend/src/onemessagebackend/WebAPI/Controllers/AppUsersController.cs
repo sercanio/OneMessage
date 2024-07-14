@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Dynamic;
+using Application.Features.AppUsers.Queries.GetAppUserByUserId;
 
 namespace WebAPI.Controllers;
 
@@ -102,6 +103,13 @@ public class AppUsersController : BaseController
     {
         DeleteAppUserBlockingCommand command = new() { BlockingId = blockingId };
         DeleteAppUserBlockingResponse response = await Mediator.Send(command);
+        return Ok(response);
+    }
+    
+    [HttpGet("GetAppUserByUserId")]
+    public async Task<ActionResult<GetAppUserByUserIdResponse>> GetAppUserByUserId([FromQuery] GetAppUserByUserIdQuery getAppUserByUserIdQuery)
+    {
+        GetAppUserByUserIdResponse response = await Mediator.Send(getAppUserByUserIdQuery);
         return Ok(response);
     }
 }

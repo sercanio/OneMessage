@@ -22,4 +22,6 @@ public static class AppUsersOperationClaims
     public const string CreateAppUserBlocking = $"{_section}.CreateAppUserBlocking";
     
     public const string DeleteAppUserBlocking = $"{_section}.DeleteAppUserBlocking";
+    
+    public const string GetAppUserByUserId = $"{_section}.GetAppUserByUserId";
 }

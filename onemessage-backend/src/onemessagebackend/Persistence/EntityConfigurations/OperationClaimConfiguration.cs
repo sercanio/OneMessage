@@ -139,6 +139,8 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
         
         
         featureOperationClaims.Add(new() { Id = ++lastId, Name = MessagesOperationClaims.GetListByAppUserId });
+        
+        featureOperationClaims.Add(new() { Id = ++lastId, Name = AppUsersOperationClaims.GetAppUserByUserId });
         return featureOperationClaims;
     }
 #pragma warning restore S1854 // Unused assignments should be removed
