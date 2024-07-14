@@ -1,3 +1,205 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+
+    // @font-face {
+    //     font-family: 'Roboto';
+    //     font-style: normal;
+    //     font-weight: 400;
+    //     font-display: swap;
+    //     src: url('src/assets/fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+    // }
+
+    // @font-face {
+    //     font-family: 'Roboto Slab';
+    //     font-style: normal;
+    //     font-display: swap;
+    //     src: url('src/assets/fonts/Roboto_Slab/RobotoSlab-VariableFont_wght.ttf') format('truetype');
+    // }
+
+    :root {
+        font-size: 16px;
+        @apply font-body;
+    }
+}
+
+@layer components {
+
+    .btn {
+        &:hover {
+            @apply bg-inherit opacity-70;
+        }
+
+    }
+
+    .btn-primary {
+        @apply bg-primary-button border-primary outline-primary text-white rounded-none font-medium opacity-90;
+
+        &:hover,
+        &:focus {
+            @apply relative bg-primary-button border-primary outline-primary text-white rounded-none font-medium opacity-100;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0.75rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 70%;
+                height: 1px;
+                background-color: currentColor;
+            }
+        }
+    }
+
+    .btn-secondary {
+        @apply bg-secondary-button border-secondary outline-secondary text-white rounded-none font-medium opacity-90;
+
+        &:hover,
+        &:focus {
+            @apply relative bg-secondary-button border-secondary outline-secondary text-white rounded-none font-medium opacity-100;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0.75rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 70%;
+                height: 1px;
+                background-color: currentColor;
+            }
+        }
+    }
+
+    .btn-pagination {
+
+        &>* {
+            @apply animate-none;
+        }
+
+        &:hover,
+        &:focus {
+            &::after {
+                @apply animate-none bg-black;
+                content: none;
+            }
+        }
+    }
+
+    .btn-pagination-disabled {
+        @apply cursor-default opacity-75;
+
+        &:hover,
+        &:focus {
+            @apply opacity-85;
+
+        }
+    }
+
+    .btn-link {
+        @apply inline-block text-primary mx-1 p-0 my-0 h-fit no-underline;
+
+        &::hover {
+            @apply underline;
+        }
+    }
+
+    .menu {
+        .login-button {
+            @apply btn-primary text-white rounded-none font-medium opacity-90 px-1 py-0.5;
+
+            a {
+                @apply relative;
+
+                &:hover,
+                &:focus {
+                    @apply relative bg-transparent border-primary outline-primary text-white rounded-none font-medium opacity-100;
+                }
+
+            }
+
+            &::after {
+                content: none !important;
+            }
+        }
+    }
+
+    .signup-button {}
+
+    .breadcrumbs {
+        @apply w-full text-xs md:text-sm bg-primary dark:bg-secondary text-tertiary;
+
+        .breadcrumb-tag-container {
+            @apply relative top-[3px];
+        }
+    }
+
+    .page {
+        @apply relative flex flex-col items-center justify-start w-full;
+    }
+
+    .section-container {
+        @apply lg:container my-4 p-6;
+    }
+
+    .login-alert {
+        @apply block p-1 m-1 bg-transparent border-none rounded-none text-error text-sm  transition-all;
+    }
+
+    .footer {
+        @apply grid-rows-2 p-10 text-neutral-content;
+    }
+
+    .link {}
+
+    .link-primary {
+        @apply text-primary;
+
+        &:hover {
+            @apply text-secondary;
+        }
+    }
+
+    .input-primary {
+        @apply border-secondary rounded-none;
+    }
+
+    .input-primary:focus,
+    .input-primary:focus-within {
+        @apply border-primary outline-none;
+    }
+
+    .input-primary:focus,
+    .input-primary:focus-within {
+        @apply border-primary outline-none;
+    }
+
+    .select-primary {
+        @apply border-secondary outline-none rounded-none;
+    }
+
+    .select-primary:focus {
+        @apply border-primary outline-none;
+    }
+
+    .badge {
+        @apply rounded-none;
+    }
+
+    .badge-primary {
+        @apply bg-primary-button border-primary outline-none text-white font-normal;
+    }
+
+    .badge-secondary {
+        @apply bg-secondary-button border-secondary outline-none text-white font-normal;
+    }
+}
+
+@layer utilities {
+    .highlight {
+        @apply bg-primary-button text-white opacity-80 underline;
+    }
+}

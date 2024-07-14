@@ -1,0 +1,60 @@
+/* login.component.scss */
+:host {
+    @apply section-container login-container bg-primary;
+}
+
+.login-container {
+    @apply flex flex-col gap-4 items-center justify-start py-8 lg:py-32;
+
+    .heading {
+        @apply text-primary font-title text-2xl;
+    }
+
+    .login-form {
+        @apply w-[310px] sm:w-[400px];
+
+        .form-group {
+            @apply mt-4 mb-6 w-full;
+
+            input {
+                @apply w-full p-2.5 mb-2.5 font-body;
+
+                &:focus {
+                    @apply border-secondary outline-secondary;
+                }
+            }
+
+            label {
+                @apply font-title;
+            }
+
+            .password-group {
+                @apply relative;
+
+                input {
+                    @apply w-full;
+                }
+
+                .password-toggle {
+                    @apply absolute top-[50%] -translate-y-1/2 right-4 cursor-pointer;
+                }
+            }
+        }
+
+        button {
+            @apply w-full p-2.5 mt-4 text-white cursor-pointer bg-primary-button;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .signup-link {
+            @apply mt-4 text-base;
+
+            a {
+                @apply btn btn-link text-secondary text-base;
+            }
+        }
+    }
+}

@@ -1,23 +1,34 @@
-<div class="flex flex-col items-center justify-center min-h-screen py-2">
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h1 class="text-xl font-bold mb-4">Login</h1>
-  
-      <form class="form-group" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="mb-4">
-          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-          <input name="email" type="email" formControlName="email" placeholder="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+<h1 class="heading">Login</h1>
+<form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="username">E-mail</label>
+        <input type="text" id="email" name="email" type="email" formControlName="email" placeholder="Email" required email="true">
+        <div *ngIf="email!.invalid && (email!.dirty || email!.touched)" class="login-alert">
+            <div *ngIf="email!.errors?.['required']">Email is required.</div>
+            <div *ngIf="email!.errors?.['email']">This is not a valid email.</div>
         </div>
-        <div class="mb-6">
-          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-          <input name="password" type="password" formControlName="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-        <div class="flex items-center justify-between">
-          <button type="submit" class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700">Login</button>
-          <a href="#" class="inline-block align-baseline font-bold text-sm text-indigo-500 hover:text-indigo-800">
-            Forgot Password?
-          </a>
-        </div>
-      </form>
     </div>
-  </div>
-  
+    <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-group">
+            <input [type]="isPasswordVisible" id="password" name="password" type="password" formControlName="password" placeholder="Password" required minlength="8">
+            <div class="password-toggle" (click)="togglePasswordVisibility()">
+                <span *ngIf="isPasswordVisible === 'password'" title="Show Password">
+                    <ng-icon name="radixEyeClosed" size="1.25rem"></ng-icon>
+                </span>
+                <span *ngIf="isPasswordVisible === 'text'" title="Hide Password">
+                    <ng-icon name="radixEyeOpen" size="1.25rem"></ng-icon>
+                </span>
+            </div>
+        </div>
+        <div *ngIf="password!.invalid && (password!.dirty || password!.touched)" class="login-alert">
+            <div *ngIf="password!.errors?.['required']">Password is required.</div>
+            <div *ngIf="password!.errors?.['minlength']">Password must be at least 8 characters long.</div>
+        </div>
+    </div>
+    <button [disabled]="!loginForm.valid" type="submit">Login</button>
+    <div *ngIf="this.httpErrorService.httpError?.error" class="login-alert">An error occurred: {{ this.httpErrorService.httpError?.error?.detail }}</div>
+    <div class="signup-link">
+        Don't have an account? <a routerLink="/signup">Signup</a>
+    </div>
+</form>
