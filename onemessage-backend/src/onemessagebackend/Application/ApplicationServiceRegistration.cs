@@ -1,6 +1,8 @@
-using System.Reflection;
+using Application.Services.AppUsers;
 using Application.Services.AuthenticatorService;
 using Application.Services.AuthService;
+using Application.Services.Messages;
+using Application.Services.UserOperationClaims;
 using Application.Services.UsersService;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,8 +22,7 @@ using NArchitecture.Core.Mailing;
 using NArchitecture.Core.Mailing.MailKit;
 using NArchitecture.Core.Security.DependencyInjection;
 using NArchitecture.Core.Security.JWT;
-using Application.Services.AppUsers;
-using Application.Services.Messages;
+using System.Reflection;
 
 namespace Application;
 
@@ -65,6 +66,8 @@ public static class ApplicationServiceRegistration
 
         services.AddScoped<IAppUserService, AppUserManager>();
         services.AddScoped<IMessageService, MessageManager>();
+        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
+
         return services;
     }
 

@@ -1,5 +1,6 @@
 using Application.Features.AppUsers.Rules;
 using Application.Services.Repositories;
+using Application.Services.UserOperationClaims;
 using Application.Services.UsersService;
 using AutoMapper;
 using Domain.Entities;
@@ -23,14 +24,16 @@ public class CreateAppUserCommand : IRequest<CreatedAppUserResponse>, ILoggableR
         private readonly IAppUserRepository _appUserRepository;
         private readonly AppUserBusinessRules _appUserBusinessRules;
         private readonly IUserService _userService;
+        private readonly IUserOperationClaimService _userOperationClaimService;
 
         public CreateAppUserCommandHandler(IMapper mapper, IAppUserRepository appUserRepository,
-                                         AppUserBusinessRules appUserBusinessRules, IUserService userService)
+                                         AppUserBusinessRules appUserBusinessRules, IUserService userService, IUserOperationClaimService userOperationClaimService)
         {
             _mapper = mapper;
             _appUserRepository = appUserRepository;
             _appUserBusinessRules = appUserBusinessRules;
             _userService = userService;
+            _userOperationClaimService = userOperationClaimService;
         }
 
         public async Task<CreatedAppUserResponse> Handle(CreateAppUserCommand request, CancellationToken cancellationToken)
@@ -38,14 +41,39 @@ public class CreateAppUserCommand : IRequest<CreatedAppUserResponse>, ILoggableR
             AppUser appUser = _mapper.Map<AppUser>(request);
             User user = await _userService.Register(new UserForRegisterDto() { Email = request.Email, Password = request.Password });
 
+            await AddOperationClaimsToUser(user);
+
             appUser.UserId = user.Id;
             appUser.AvatarURL = request.AvatarURL;
             appUser.UserName = request.UserName;
+
 
             await _appUserRepository.AddAsync(appUser);
 
             CreatedAppUserResponse response = _mapper.Map<CreatedAppUserResponse>(appUser);
             return response;
+        }
+
+        private async Task AddOperationClaimsToUser(User user)
+        {
+            List<int> operationClaimIds = new List<int>
+            {
+                5,
+                19,
+                31,
+                32,
+                33,
+                34,
+                35
+            };
+
+            foreach (var claimId in operationClaimIds)
+            {
+                UserOperationClaim userOperationClaim = new UserOperationClaim() { UserId = user.Id, OperationClaimId = claimId };
+                UserOperationClaim mappedUserOperationClaim = _mapper.Map<UserOperationClaim>(new UserOperationClaim() { UserId = user.Id, OperationClaimId = claimId });
+
+                await _userOperationClaimService.AddAsync(mappedUserOperationClaim);
+            }
         }
     }
 }
