@@ -1,0 +1,12 @@
+<app-searchbar></app-searchbar>
+<div class="flex h-full min-h-96 max-w-6xl w-full mx-auto">
+  <app-message-list
+    (contactSelected)="onSelectContact($event)"
+    class="w-1/5 border-r border-slate-700"
+  ></app-message-list>
+  <app-message-detail
+    *ngIf="selectedContact"
+    [contact]="selectedContact"
+    class="w-4/5"
+  ></app-message-detail>
+</div>

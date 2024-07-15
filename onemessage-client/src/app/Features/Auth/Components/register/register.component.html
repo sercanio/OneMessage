@@ -1,8 +1,8 @@
 <section class="w-full max-w-80 mx-auto">
-  <h1 class="text-4xl font-bold mb-8">Login</h1>
+  <h1 class="text-4xl font-bold mb-8">Register</h1>
   <form
-    class="login-form space-y-6"
-    [formGroup]="loginForm"
+    class="register-form space-y-6"
+    [formGroup]="registerForm"
     (ngSubmit)="onSubmit()"
   >
     <div class="form-group">
@@ -14,7 +14,7 @@
         id="email"
         name="email"
         formControlName="email"
-        placeholder="Email"
+        placeholder="email@example.com"
         required
         email="true"
         class="input input-bordered w-full"
@@ -38,7 +38,6 @@
           id="password"
           name="password"
           formControlName="password"
-          placeholder="Password"
           required
           minlength="8"
           class="input input-bordered w-full"
@@ -66,12 +65,32 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="userName" class="block text-sm font-medium text-gray-400 leading-8"
+        >Username</label
+      >
+      <input
+        type="text"
+        id="userName"
+        name="userName"
+        formControlName="userName"
+        required
+        class="input input-bordered w-full"
+      />
+      <div
+        *ngIf="userName!.invalid && (userName!.dirty || userName!.touched)"
+        class="text-red-600 text-sm mt-1"
+      >
+        <div *ngIf="userName!.errors?.['required']">Username is required.</div>
+      </div>
+    </div>
+
     <button
-      [disabled]="!loginForm.valid"
+      [disabled]="!registerForm.valid"
       type="submit"
       class="btn btn-primary w-full"
     >
-      Login
+      Register
     </button>
 
     <div
@@ -81,9 +100,9 @@
       An error occurred: {{ this.httpErrorService.httpError?.error?.detail }}
     </div>
 
-    <div class="signup-link text-center mt-4">
-      Don't have an account?
-      <a routerLink="/register" class="text-primary">Register</a>
+    <div class="login-link text-center mt-4">
+      Already have an account?
+      <a routerLink="/login" class="text-primary">Login</a>
     </div>
   </form>
 </section>

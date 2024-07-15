@@ -35,8 +35,8 @@ export const authInterceptor: HttpInterceptorFn = (
   return next(req).pipe(
     catchError((error) => {
       if (error.status === HttpStatusCode.Unauthorized) {
-        console.log('Unauthorized, refreshing token...');
-        authService.refreshAccesstoken();
+      console.log('Unauthorized, refreshing token...');
+      authService.refreshAccessToken();
       }
       return throwError(() => error);
     })

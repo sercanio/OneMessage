@@ -1,0 +1,22 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4 px-2">Contacts</h2>
+  <ul>
+    <li
+      *ngFor="let contact of contacts"
+      (click)="selectContact(contact)"
+      class="cursor-pointer opacity-80 hover:opacity-100 hover:bg-slate-800 rounded-lg"
+      [ngClass]="{ 'bg-slate-700': contact === selectedContact }"
+    >
+      <div class="avatar h-10 flex items-center justify-start p-2">
+        <div class="flex items-center justify-start w-8 h-8 rounded-full mr-2">
+          <img
+            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            alt="Contact Avatar"
+          />
+        </div>
+        <h3 class="text-base font-semibold">{{ contact.userName }}</h3>
+        <p class="text-gray-600">{{ contact.lastMessage }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

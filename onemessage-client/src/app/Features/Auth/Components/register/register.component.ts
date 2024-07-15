@@ -22,13 +22,15 @@ import { HttpErrorService } from '../../../../Core/Services/http-error/http-erro
     NgIconComponent,
     RouterModule,
   ],
-  templateUrl: './login.component.html',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
   viewProviders: [provideIcons({ radixEyeClosed, radixEyeOpen })],
 })
-export class LoginComponent {
-  loginForm = new FormGroup({
+export class RegisterComponent {
+  registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required])
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    userName: new FormControl('', [Validators.required]),
   });
 
   passwordVisibility = false;
@@ -40,20 +42,23 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     protected httpErrorService: HttpErrorService
   ) {
-    this.authService.userSubject.subscribe((user) => {
-      if (!!user) {
-        this.router.navigateByUrl('/');
-      }
-    });
-    this.loadingText = 'Logging in...';
+    this.loadingText = 'Registering...';
   }
 
   get email(): AbstractControl<string | null> | null {
-    return this.loginForm.get('email');
+    return this.registerForm.get('email');
   }
 
   get password(): AbstractControl<string | null> | null {
-    return this.loginForm.get('password');
+    return this.registerForm.get('password');
+  }
+
+  get userName(): AbstractControl<string | null> | null {
+    return this.registerForm.get('userName');
+  }
+
+  get avatarURL(): AbstractControl<string | null> | null {
+    return this.registerForm.get('avatarURL');
   }
 
   togglePasswordVisibility(): void {
@@ -65,23 +70,23 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe({
         next: (data: any) => {
-          if (data?.accessToken) {
-            this.router.navigate(['/']); // Redirect to home page
+          if (data?.id) {
+            this.router.navigate(['/login']); // Redirect to login page
           } else {
-            console.error('Login failed:', data?.message || 'Unknown error');
+            console.error('Registration failed:', data?.message || 'Unknown error');
           }
         },
         error: (err) => {
-          console.error('Login request failed:', err);
+          console.error('Registration request failed:', err);
         },
       });
     }
   }
 
   resetForm(): void {
-    this.loginForm.reset();
+    this.registerForm.reset();
   }
 }

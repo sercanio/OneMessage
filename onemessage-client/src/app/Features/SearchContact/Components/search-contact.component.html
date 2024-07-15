@@ -1,0 +1,32 @@
+<section class="relative w-full max-w-xl mx-auto">
+  <form [formGroup]="searchForm">
+    <div class="input-group mb-3 flex join">
+      <input
+        type="text"
+        class="form-control input input-bordered w-full join-item focus:outline-none"
+        placeholder="Search a User"
+        formControlName="searchTerm"
+      />
+      <button class="btn btn-primary join-item" (click)="onSearch()">
+        Search
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="$searchResult | async as user" class="absolute top-16 z-50">
+    <div class="card bg-base-100 w-96 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">{{ user.userName }}</h2>
+        <p>{{ user.id }}</p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary" (click)="addContact(user.id)">
+            Add Contact
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <div *ngIf="showNoUserFound" class="absolute top-16">
+    <p class="text-red-500">No user found matching your search.</p>
+  </div>
+</section>

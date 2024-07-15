@@ -2,7 +2,7 @@
     @apply w-full mx-auto p-4 my-4 flex items-center justify-between h-16 font-title;
 
     .logo-container {
-        @apply flex items-center text-primary text-lg font-semibold;
+        @apply flex items-center text-slate-500 text-lg font-semibold;
 
         .logo {
             @apply max-w-[80px] md:max-w-[120px];
@@ -16,14 +16,14 @@
             @apply text-navbarInactive rounded-md text-sm font-bold;
 
             .active {
-                @apply text-primary bg-transparent;
+                @apply  bg-slate-800;
             }
 
             .inner-menu {
                 @apply dropdown dropdown-bottom text-navbarInactive p-4 rounded-md text-sm font-bold;
 
                 .inner-menu-list {
-                    @apply z-[1] border-2 bg-white;
+                    @apply z-[1] border-2 bg-slate-500;
 
                     &-item {
                         @apply text-navbarInactive p-4 rounded-md text-sm font-bold;
@@ -33,7 +33,7 @@
 
             .dropdown {
                 &-content {
-                    @apply z-[1] bg-white dark:bg-secondary border-2 dark:border-gray-700;
+                    @apply z-[1] bg-slate-800 dark:bg-secondary border dark:border-slate-700;
                 }
             }
 
@@ -56,7 +56,7 @@
 
                 &:hover,
                 &:focus {
-                    @apply text-primary bg-transparent;
+                    @apply text-slate-300 bg-transparent;
                 }
             }
 

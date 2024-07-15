@@ -1,7 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { LoginResponse } from '../Models/LoginResponse';
-import { BehaviorSubject, from, Observable, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  from,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,13 +17,32 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   public userSubject = new BehaviorSubject<any>(null);
+  public appUserSubject = new BehaviorSubject<any>(null);
+  private userSubscription = new Subscription();
+  private appUserSubscription = new Subscription();
+
   constructor(private router: Router, private http: HttpClient) {
-    this.getUserFromAuth().subscribe((user) => {
+    this.userSubscription = this.getUserFromAuth().subscribe((user) => {
       this.userSubject.next(user);
+    });
+    this.userSubject.subscribe((user) => {
+      this.getAppUserFromAuth(user);
     });
   }
 
-  login(data: any) {
+  public getAppUserFromAuth(user: any) {
+    if (user) {
+      this.http
+        .get(
+          `http://localhost:60805/api/AppUsers/GetAppUserByUserId?UserId=${user?.id}`
+        )
+        .subscribe((appUser) => {
+          this.appUserSubject.next(appUser);
+        });
+    }
+  }
+
+  public login(data: any) {
     return this.http
       .post<LoginResponse>('http://localhost:60805/api/Auth/Login', data)
       .pipe(
@@ -27,11 +54,18 @@ export class AuthService {
             next: (member) => {
               this.userSubject.next(member);
               this.userSubject.value;
-              // window.location.href = `/${member?.memberSetting.language}`;
             },
           });
         })
       );
+  }
+
+  public register(data: any) {
+    return this.http.post('http://localhost:60805/api/AppUsers', data).pipe(
+      tap((result) => {
+        console.log('Registration successful', result);
+      })
+    );
   }
 
   public logout(): void {
@@ -49,7 +83,7 @@ export class AuthService {
     });
   }
 
-  public getAccessToken(): Observable<string | null> {
+  protected getAccessToken(): Observable<string | null> {
     return from(
       new Promise<string | null>(async (resolve) => {
         if (typeof document !== 'undefined') {
@@ -80,7 +114,7 @@ export class AuthService {
     );
   }
 
-  public getUserFromAuth(): Observable<any> {
+  protected getUserFromAuth(): Observable<any> {
     return this.getAccessToken().pipe(
       switchMap((accessToken) => {
         if (!accessToken) {
@@ -93,22 +127,21 @@ export class AuthService {
     );
   }
 
-  public refreshAccesstoken(): void {
+  public refreshAccessToken(): void {
     this.http
       .get<any>('http://localhost:60805/api/Auth/RefreshToken')
       .subscribe((response) => {
         this.storeAccessToken(response.token);
         this.refreshuserSubject();
-        console.log("AccessToken Refreshed");
-        
+        console.log('AccessToken Refreshed');
       });
   }
 
-  private storeAccessToken(token: string): void {
+  protected storeAccessToken(token: string): void {
     document.cookie = `accessToken=${token}`;
   }
 
-  public refreshuserSubject(): void {
+  protected refreshuserSubject(): void {
     this.getUserFromAuth().subscribe({
       next: (member) => {
         this.userSubject.next(member);
